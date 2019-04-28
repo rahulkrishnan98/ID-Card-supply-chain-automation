@@ -23,7 +23,7 @@
 
 	<div class="wrapper">
 		<div class="sidebar" data-background-color="white" data-active-color="danger">
-    	<div class="sidebar-wrapper">
+    	<div style="overflow-x:hidden;" class="sidebar-wrapper">
         <div class="logo">
           <a href="https://www.google.com/search?q=caps+digital&oq=caps+&aqs=chrome.0.69i59j69i61l2j69i60j69i57j0.1114j0j4&sourceid=chrome&ie=UTF-8" class="simple-text">CAPS DIGITAL</a>
         </div>
@@ -156,7 +156,7 @@
 
                               {% for i in detail %}
                                 <tr>
-                                  <td><a href="/orderlists/{{i.orderid}}" class="link">{{i.oderid}}<a></td>
+                                  <td><a href="/orderlist/{{i.orderid}}/template" class="link">{{i.orderid}}<a></td>
                                   <td>{{i.created}}</td>
                                   <td><center>{% if i.template %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
                                   <td><center>{% if i.data %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>

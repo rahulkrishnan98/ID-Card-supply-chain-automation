@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import ClientDetailForm, RegisterUser
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import ClientDetail, OrderDetail
+from .models import ClientDetail, OrderDetail, Uploadtemplate
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
@@ -37,6 +37,7 @@ def registerclient(request):
     form = ClientDetailForm()
     if request.method == 'POST':
         form2 = ClientDetailForm(request.POST)
+        print(form2.is_valid())
         if form2.is_valid():
             obj = form2.save(commit=False)
             obj.save()
@@ -52,6 +53,7 @@ def clientdetails(request):
         obj = ClientDetail.objects.get(company=addorder)
         order = OrderDetail(company=obj)
         order.save()
+
         return HttpResponseRedirect('/clientdetails/'+addorder+'/')
     obj = ClientDetail.objects.all()
     context = {
@@ -88,15 +90,36 @@ def orderlists(request):
     return render(request,'orderlist.html',context)
 
 def orderlistfilter(request,slug,stage):
+    if request.method == "POST":
+        # ProfileForm(request.POST, request.FILES)
+        # order = OrderDetail.objects.get(orderid=slug)
+        # image1 = request.POST.get('image1')
+        # print(image1)
+        # # obj = Uploadtemplate()
+        # # obj.orderid = order
+        # # obj.fimage = image1
+        # # # obj.bimage = image2
+        # # obj.save()
+        return HttpResponseRedirect("/orderlist/"+str(slug)+"/template")
     total = OrderDetail.objects.count()
     if slug.lower() == 'pending':
         print(slug.lower())
     elif slug is not None:
         order = OrderDetail.objects.get(orderid=slug)
         context = {
-            'order':order
+            'order':order,
+            'fimage':False,
+            'bimage':False,
         }
-        return render(request,'orderview.html',context)
+        if Uploadtemplate.objects.filter(orderid=order).count() != 0:
+            image1 = Uploadtemplate.objects.get(orderid=order)
+            image2 = Uploadtemplate.objects.get(orderid=order)
+            context = {
+                'order':order,
+                'fimage':image1.fimage,
+                'bimage':image2.bimage,
+            }
+        return render(request,'tempupload.html',context)
     pending = OrderDetail.objects.filter(template=True,data=True,billing=True,production=True,shipping=True).count()
     obj = OrderDetail.objects.exclude(template=True,data=True,billing=True,production=True,shipping=True)
     context = {
@@ -105,3 +128,5 @@ def orderlistfilter(request,slug,stage):
         'detail':obj
     }
     return render(request,'orderlist.html',context)
+
+# def uploadtemplate(stage):

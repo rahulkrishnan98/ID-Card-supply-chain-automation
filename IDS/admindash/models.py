@@ -22,7 +22,7 @@ def autoincremetorder():
 
 class ClientDetail(models.Model):
     clientid = models.IntegerField(primary_key=True,blank=False,unique=True,default=autoincremet)
-    company = models.CharField(blank=False,max_length=100,default='')
+    company = models.CharField(blank=False,max_length=100,default='',unique=True)
     email = models.EmailField(max_length=30)
     fname = models.CharField(blank=False,max_length=50)
     lname = models.CharField(blank=False,max_length=50)
@@ -48,3 +48,11 @@ class OrderDetail(models.Model):
 
     def __str__(self):
         return self.orderid
+
+class Uploadtemplate(models.Model):
+    orderid = models.ForeignKey(OrderDetail,on_delete=models.CASCADE,unique=True)
+    fimage = models.ImageField(upload_to="static/template/",default="static/template/demo1.jpg")
+    bimage = models.ImageField(upload_to="static/template/",default="static/template/demo2.jpg")
+
+    def __str__(self):
+        return self.orderid.orderid
