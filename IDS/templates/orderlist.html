@@ -46,12 +46,6 @@
               <p>Client Details</p>
             </a>
           </li>
-					<li class="">
-            <a href="/addorder">
-              <i class="plus icon"></i>
-              <p>Add Order</p>
-            </a>
-          </li>
 					<li class="active">
             <a href="/orderlist">
               <i class="ti-view-list-alt"></i>
@@ -130,7 +124,7 @@
 										</div>
 								</div>
 						</div></a>
-						<a href="/orderlist/pending/"><div class="col-lg-4 col-sm-6">
+						<a href="/orderlist/pending"><div class="col-lg-4 col-sm-6">
 								<div class="card">
 										<div class="content">
 												<div class="row">
@@ -169,7 +163,7 @@
 															<tbody>
 																{% for i in detail %}
 																	<tr>
-																		<td><a href="/orderlists/{{i.orderid}}" class="link">{{i.oderid}}<a></td>
+																		<td><a href="/orderlist/{{i.orderid}}/template" class="link">{{i.orderid}}<a></td>
 																		<td><a href="/clientdetails/{{i.company}}" class="link">{{i.company}}<a></td>
 																		<td>{{i.created}}</td>
 																		<td><center>{% if i.template %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>

@@ -37,7 +37,7 @@ class ClientDetail(models.Model):
 
 class OrderDetail(models.Model):
     company = models.ForeignKey(ClientDetail,on_delete=models.CASCADE)
-    oderid = models.CharField(blank=False,max_length=100,default=autoincremetorder)
+    orderid = models.CharField(blank=False,max_length=100,default=autoincremetorder)
     template = models.BooleanField(default=False)
     data = models.BooleanField(default=False)
     billing = models.BooleanField(default=False)
@@ -47,4 +47,4 @@ class OrderDetail(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.oderid
+        return self.orderid

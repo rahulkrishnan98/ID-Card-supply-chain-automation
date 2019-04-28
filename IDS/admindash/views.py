@@ -47,6 +47,12 @@ def registerclient(request):
     return render(request,'registerclient.html',context)
 
 def clientdetails(request):
+    if request.method == "POST":
+        addorder = request.POST.get('addorder')
+        obj = ClientDetail.objects.get(company=addorder)
+        order = OrderDetail(company=obj)
+        order.save()
+        return HttpResponseRedirect('/clientdetails/'+addorder+'/')
     obj = ClientDetail.objects.all()
     context = {
         'detail':obj
@@ -70,11 +76,6 @@ def clientpage(request,client):
     }
     return render(request,'clientpage.html',context)
 
-
-def addorder(request):
-    context = {}
-    return render(request,'addorder.html',context)
-
 def orderlists(request):
     total = OrderDetail.objects.count()
     pending = OrderDetail.objects.filter(template=True,data=True,billing=True,production=True,shipping=True).count()
@@ -86,10 +87,16 @@ def orderlists(request):
     }
     return render(request,'orderlist.html',context)
 
-def orderlistfilter(request,slug):
+def orderlistfilter(request,slug,stage):
     total = OrderDetail.objects.count()
     if slug.lower() == 'pending':
         print(slug.lower())
+    elif slug is not None:
+        order = OrderDetail.objects.get(orderid=slug)
+        context = {
+            'order':order
+        }
+        return render(request,'orderview.html',context)
     pending = OrderDetail.objects.filter(template=True,data=True,billing=True,production=True,shipping=True).count()
     obj = OrderDetail.objects.exclude(template=True,data=True,billing=True,production=True,shipping=True)
     context = {

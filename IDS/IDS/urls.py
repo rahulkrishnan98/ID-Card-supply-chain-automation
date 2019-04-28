@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
-from admindash.views import dashboard, registerclient, clientdetails, addorder, orderlists, signup, clientpage, orderlistfilter
+from admindash.views import dashboard, registerclient, clientdetails, orderlists, signup, clientpage, orderlistfilter
 
 urlpatterns = [
     url(r'admin/', admin.site.urls),
@@ -26,8 +26,7 @@ urlpatterns = [
     url(r'^registerclient/$', registerclient),
     url(r'^clientdetails/$', clientdetails),
     url(r'^clientdetails/(?P<client>[\w ]*)/$',clientpage),
-    url(r'^addorder/$', addorder),
     url(r'^orderlist/$', orderlists),
-    url(r'^orderlist/(?P<slug>[\w ]*)/$', orderlistfilter),
+    url(r'^orderlist/(?P<slug>[\w ]*)/(?P<stage>[\w ]*)$', orderlistfilter),
     url(r'^signup/$',signup),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
