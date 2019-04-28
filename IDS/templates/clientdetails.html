@@ -53,7 +53,7 @@
             </a>
           </li>
 					<li class="">
-            <a href="/clientdetails">
+            <a href="/orderlist">
               <i class="ti-view-list-alt"></i>
               <p>Order List</p>
             </a>
@@ -127,7 +127,7 @@
 																<tbody>
 																	{% for i in detail %}
 																		<tr>
-																			<td>{{i.company}}</td>
+																			<td><a href="/clientdetails/{{i.company}}" class="link">{{i.company}}<a></td>
 																			<td>{{i.fname}} {{i.lname}}</td>
 																			<td>{{i.email}}</td>
 																			<td>{{i.phonenum}}</td>

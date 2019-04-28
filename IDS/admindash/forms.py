@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import ClientDetail
+from .models import ClientDetail, OrderDetail
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
@@ -21,7 +21,7 @@ class ClientDetailForm(ModelForm):
         self.fields['pincode'].widget.attrs['class'] = 'form-control border-input'
 
 
-class RegisterOrder(UserCreationForm):
+class RegisterUser(UserCreationForm):
 
     class Meta:
         model = User

@@ -18,14 +18,16 @@ from django.urls import path
 from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
-from admindash.views import dashboard, registerclient, clientdetails, addorder, orderlists, signup
+from admindash.views import dashboard, registerclient, clientdetails, addorder, orderlists, signup, clientpage, orderlistfilter
 
 urlpatterns = [
     url(r'admin/', admin.site.urls),
-    url(r'dashboard/', dashboard),
-    url(r'registerclient/', registerclient),
-    url(r'clientdetails/', clientdetails),
-    url(r'addorder/', addorder),
-    url(r'orderlists/', orderlists),
-    url(r'signup/',signup),
+    url(r'^dashboard/$', dashboard),
+    url(r'^registerclient/$', registerclient),
+    url(r'^clientdetails/$', clientdetails),
+    url(r'^clientdetails/(?P<client>[\w ]*)/$',clientpage),
+    url(r'^addorder/$', addorder),
+    url(r'^orderlist/$', orderlists),
+    url(r'^orderlist/(?P<slug>[\w ]*)/$', orderlistfilter),
+    url(r'^signup/$',signup),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

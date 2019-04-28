@@ -10,6 +10,15 @@ def autoincremet():
     else:
         return num + 1
 
+def autoincremetorder():
+    num = OrderDetail.objects.count()
+    if num == None:
+        string = 'OD'+'0'*(8-len(str(num)))+str(num)
+        return string
+    else:
+        num = num + 1
+        string = 'OD'+'0'*(8-len(str(num)))+str(num)
+        return string
 
 class ClientDetail(models.Model):
     clientid = models.IntegerField(primary_key=True,blank=False,unique=True,default=autoincremet)
@@ -25,3 +34,17 @@ class ClientDetail(models.Model):
 
     def __str__(self):
         return self.company
+
+class OrderDetail(models.Model):
+    company = models.ForeignKey(ClientDetail,on_delete=models.CASCADE)
+    oderid = models.CharField(blank=False,max_length=100,default=autoincremetorder)
+    template = models.BooleanField(default=False)
+    data = models.BooleanField(default=False)
+    billing = models.BooleanField(default=False)
+    production = models.BooleanField(default=False)
+    shipping = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.oderid

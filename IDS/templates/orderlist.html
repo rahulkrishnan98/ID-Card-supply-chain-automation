@@ -34,7 +34,7 @@
               <p>Dashboard</p>
             </a>
           </li>
-					<li class="active">
+					<li class="">
             <a href="/registerclient">
               <i class="ti-user"></i>
               <p>Register Client</p>
@@ -52,7 +52,7 @@
               <p>Add Order</p>
             </a>
           </li>
-					<li class="">
+					<li class="active">
             <a href="/orderlist">
               <i class="ti-view-list-alt"></i>
               <p>Order List</p>
@@ -72,7 +72,7 @@
 	            <span class="icon-bar bar2"></span>
 	            <span class="icon-bar bar3"></span>
             </button>
-            <a class="navbar-brand" href="#">Register Client</a>
+            <a class="navbar-brand" href="#">Order List</a>
           </div>
           <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -109,96 +109,83 @@
 
 			<!-- content here starts -->
       <div class="content">
-				<div class="col-lg-8 col-md-7">
-					<div class="card">
-						<div class="content">
-							<form action="." method="POST">
-								{% csrf_token %}
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label>Company</label>
-											{{form.company}}
-											<!-- <input type="text" class="form-control border-input" placeholder="Company Name"> -->
+				<div class="container-fluid">
+					<div class="row">
+						<a href="/orderlist/"><div class="col-lg-3 col-sm-6">
+								<div class="card">
+										<div class="content">
+												<div class="row">
+														<div class="col-xs-5">
+																<div class="icon-big icon-warning text-center">
+																		<i class="ti-server"></i>
+																</div>
+														</div>
+														<div class="col-xs-7">
+																<div class="numbers">
+																		<p>Total Orders</p>
+																		<center>{{total}}</center>
+																</div>
+														</div>
+												</div>
 										</div>
-									</div>
-
 								</div>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label for="exampleInputEmail1">Email address</label>
-											{{form.email}}
-											<!-- <input type="email" class="form-control border-input" placeholder="Email">                                            </div> -->
+						</div></a>
+						<a href="/orderlist/pending/"><div class="col-lg-4 col-sm-6">
+								<div class="card">
+										<div class="content">
+												<div class="row">
+														<div class="col-xs-5">
+																<div class="icon-big icon-warning text-center">
+																		<i style="color:salmon;" class="cogs icon"></i>
+																</div>
+														</div>
+														<div class="col-xs-7">
+																<div class="numbers">
+																		<p>Pending Orders</p>
+																		<center>{{pending}}</center>
+																</div>
+														</div>
+												</div>
 										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Phone Number</label>
-											{{form.phonenum}}
-											<!-- <input type="email" class="form-control border-input" placeholder="Email">                                            </div> -->
-										</div>
-									</div>
 								</div>
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-											<label>First Name</label>
-											{{form.fname}}
-										 <!-- <input type="text" class="form-control border-input" placeholder="First Name"> -->
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Last Name</label>
-											{{form.lname}}
-											<!-- <input type="text" class="form-control border-input" placeholder="Last Name"> -->
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label>Address</label>
-											{{form.address}}
-											<!-- <input type="text" class="form-control border-input" placeholder="Address"> -->
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-4">
-										<div class="form-group">
-											<label>City</label>
-											{{form.city}}
-											<!-- <input type="text" class="form-control border-input" placeholder="City"> -->
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label>Country</label>
-											{{form.country}}
-											<!-- <input type="text" class="form-control border-input" placeholder="Country" value="India"> -->
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label>Postal Code</label>
-											{{form.pincode}}
-											<!-- <input type="number" class="form-control border-input" placeholder="ZIP Code"> -->
-										</div>
-									</div>
-								</div>
-								<div class="text-center">
-									<button type="submit" class="btn btn-info btn-fill btn-wd">Register</button>
-								</div>
-								<div class="clearfix"></div>
-							</form>
-						</div>
+						</div></a>
 					</div>
-				</div>
-			<!-- content here ends -->
+						<div class="row">
+								<div class="col-md-12">
+										<div class="card">
+												<div class="content table-responsive table-full-width">
+													<table class="table table-striped">
+															<thead>
+																	<th>Order ID</th>
+																	<th>Company</th>
+																	<th>Created On</th>
+																	<th><center>Template</center></th>
+																	<th><center>Data</center></th>
+																	<th><center>Billing</center></th>
+																	<th><center>Production</center></th>
+																	<th><center>Shipping</center></th>
 
-    </div>
+															</thead>
+															<tbody>
+																{% for i in detail %}
+																	<tr>
+																		<td><a href="/orderlists/{{i.orderid}}" class="link">{{i.oderid}}<a></td>
+																		<td><a href="/clientdetails/{{i.company}}" class="link">{{i.company}}<a></td>
+																		<td>{{i.created}}</td>
+																		<td><center>{% if i.template %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
+																		<td><center>{% if i.data %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
+																		<td><center>{% if i.billing %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
+																		<td><center>{% if i.production %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
+																		<td><center>{% if i.shipping %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
+																	</tr>
+																	{% endfor %}
+															</tbody>
+													</table>
+												</div>
+										</div>
+								</div>
+				</div>
+			</div>
 	</div>
 
 </body>

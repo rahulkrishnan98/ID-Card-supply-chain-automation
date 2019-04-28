@@ -47,13 +47,13 @@
             </a>
           </li>
 					<li class="">
-            <a href="/clientdetails">
+            <a href="/addorder">
               <i class="plus icon"></i>
               <p>Add Order</p>
             </a>
           </li>
 					<li class="">
-            <a href="/clientdetails">
+            <a href="/orderlist">
               <i class="ti-view-list-alt"></i>
               <p>Order List</p>
             </a>
@@ -110,9 +110,46 @@
 			<!-- content here starts -->
       <div class="content">
         <div class="container-fluid">
-          <div class="row">
-
-          </div>
+					<div class="row">
+						<a href="/orderlist/"><div class="col-lg-3 col-sm-6">
+								<div class="card">
+										<div class="content">
+												<div class="row">
+														<div class="col-xs-5">
+																<div class="icon-big icon-warning text-center">
+																		<i class="ti-server"></i>
+																</div>
+														</div>
+														<div class="col-xs-7">
+																<div class="numbers">
+																		<p>Total Orders</p>
+																		<center>{{total}}</center>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+						</div></a>
+						<a href="/orderlist/pending/"><div class="col-lg-4 col-sm-6">
+								<div class="card">
+										<div class="content">
+												<div class="row">
+														<div class="col-xs-5">
+																<div class="icon-big icon-warning text-center">
+																		<i style="color:salmon;" class="cogs icon"></i>
+																</div>
+														</div>
+														<div class="col-xs-7">
+																<div class="numbers">
+																		<p>Pending Orders</p>
+																		<center>{{pending}}</center>
+																</div>
+														</div>
+												</div>
+										</div>
+								</div>
+						</div></a>
+					</div>
         </div>
       </div>
 			<!-- content here ends -->
