@@ -50,9 +50,17 @@ class OrderDetail(models.Model):
         return self.orderid
 
 class Uploadtemplate(models.Model):
-    orderid = models.ForeignKey(OrderDetail,on_delete=models.CASCADE,unique=True)
+    orderid = models.OneToOneField(OrderDetail,on_delete=models.CASCADE,unique=True)
     fimage = models.ImageField(upload_to="static/template/",default="static/template/demo1.jpg")
     bimage = models.ImageField(upload_to="static/template/",default="static/template/demo2.jpg")
+    response = models.BooleanField(default=False)
 
     def __str__(self):
         return self.orderid.orderid
+
+class GetData(models.Model):
+    orderid = models.OneToOneField(OrderDetail,on_delete=models.CASCADE,unique=True)
+    file = models.FileField(upload_to='static/files/',blank=True)
+
+    def __self__(self):
+        return self.orderid.orderid 

@@ -1,0 +1,21 @@
+{% extends "orderview.html" %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+  <div class="col-md-4 col-lg-4">
+    <h3><b>Data File</b></h3>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-4 col-lg-4">
+    <div style="padding: 15px 15px;box-shadow:none;padding-top:5px;" class="card">
+        <center><p style="margin-top:20px;">Filename.xls | Size: 441Kb</p></center>
+        <hr>
+        <center><h4>Download Data <button style="border-radius:5px;margin-left:30px;" class="btn btn-fill btn-info" ><i  class="download icon"></i></buttom></h4></center>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

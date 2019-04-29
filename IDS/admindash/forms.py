@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import ClientDetail, OrderDetail
+from .models import ClientDetail, OrderDetail, Uploadtemplate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
@@ -34,3 +34,8 @@ class RegisterUser(UserCreationForm):
         self.fields['password1'].widget.attrs['class'] = 'form-control border-input'
         self.fields['password1'].widget.attrs['placeholder'] = 'Password'
         self.fields['password2'].widget.attrs['class'] = 'form-control border-input'
+
+class UploadTemplateForm(forms.ModelForm):
+    class Meta:
+        model = Uploadtemplate
+        fields = ('orderid','fimage', 'bimage' )

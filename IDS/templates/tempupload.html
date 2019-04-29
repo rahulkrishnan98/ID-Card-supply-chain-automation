@@ -7,36 +7,55 @@
   </div>
 </div>
 <hr>
-<form action="" method="post" encypt="multipart/form-data">
+{% if not response %}<form method="post" encypt="multipart/form-data">{% endif %}
   {% csrf_token %}
   <div class="row">
     <div class="col-md-4 col-lg-4">
       <div style="padding: 15px 15px;box-shadow:none;" class="card">
-        <b><input type="file" name="image1" value=""></b>
+        {% if not response %}
+        <b>{{form.fimage}}</b>
         <hr>
+        {% endif %}
         <img style="width:100%;border-radius:17px;margin-bottom:0px;"class="card-img-top" src="{% if fimage %}/{{fimage.url}}{% else %}/static/template/demo1.jpg{% endif %}" alt="">
+        {% if not response %}
         <hr>
         <div class="footer">
           <h6>Upload front template</h6>
         </div>
+        {% endif %}
       </div>
     </div>
     <div class="col-md-4 col-lg-4">
       <div style="padding: 15px 15px;box-shadow:none;" class="card">
-        <b><input type="file" name="image2" value=""></b>
+        {% if not response %}
+        <b>{{form.bimage}}</b>
         <hr>
+        {% endif %}
         <img style="width:100%;border-radius:17px;margin-bottom:0px;"class="card-img-top" src="{% if bimage %}/{{bimage.url}}{% else %}/static/template/demo2.jpg{% endif %}" alt="">
+        {% if not response %}
         <hr>
         <div class="footer">
           <h6>Upload rear template</h6>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
+  {% if not response %}
   <div class="row">
     <div class="col-md-4 col-lg-4">
-      <button style="border-radius:5px;" type="submit" name="postimage" class="btn btn-fill btn-info">Submit</button>
+      <button style="border-radius:5px;" type="submit"class="btn btn-fill btn-info">Submit</button>
     </div>
   </div>
-</form>
+  {% endif %}
+{% if not response %}</form>{% endif %}
+{% if response %}
+<div class="row">
+  <div class="col-md-8 col-lg-8">
+    <div style="padding: 15px 15px;box-shadow:none;padding-top:5px;" class="card">
+        <center><h4><i style="color:green;" class="check icon"></i> Confirmed <a href="/orderlist/{{order.orderid}}/data"style="border-radius:5px;margin-left:30px;" class="btn btn-fill btn-success" >Move to next stage</a></h4></center>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock content %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import ClientDetailForm, RegisterUser
+from .forms import ClientDetailForm, RegisterUser, UploadTemplateForm
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import ClientDetail, OrderDetail, Uploadtemplate
 from django.contrib.auth import login, authenticate
@@ -37,7 +37,6 @@ def registerclient(request):
     form = ClientDetailForm()
     if request.method == 'POST':
         form2 = ClientDetailForm(request.POST)
-        print(form2.is_valid())
         if form2.is_valid():
             obj = form2.save(commit=False)
             obj.save()
@@ -91,35 +90,26 @@ def orderlists(request):
 
 def orderlistfilter(request,slug,stage):
     if request.method == "POST":
-        # ProfileForm(request.POST, request.FILES)
-        # order = OrderDetail.objects.get(orderid=slug)
-        # image1 = request.POST.get('image1')
-        # print(image1)
-        # # obj = Uploadtemplate()
-        # # obj.orderid = order
-        # # obj.fimage = image1
-        # # # obj.bimage = image2
-        # # obj.save()
-        return HttpResponseRedirect("/orderlist/"+str(slug)+"/template")
-    total = OrderDetail.objects.count()
-    if slug.lower() == 'pending':
-        print(slug.lower())
-    elif slug is not None:
         order = OrderDetail.objects.get(orderid=slug)
-        context = {
-            'order':order,
-            'fimage':False,
-            'bimage':False,
-        }
-        if Uploadtemplate.objects.filter(orderid=order).count() != 0:
-            image1 = Uploadtemplate.objects.get(orderid=order)
-            image2 = Uploadtemplate.objects.get(orderid=order)
-            context = {
-                'order':order,
-                'fimage':image1.fimage,
-                'bimage':image2.bimage,
-            }
-        return render(request,'tempupload.html',context)
+        form = UploadTemplateForm(request.POST, request.FILES)
+        form.orderid = order
+        if form.is_valid():
+            print(form)
+            form.save()
+            return HttpResponseRedirect("/orderlist/"+str(slug)+"/template")
+    total = OrderDetail.objects.count()
+    if stage.lower() == 'pending':
+        print(slug.lower())
+    elif stage.lower() == 'template':
+        return render(request,'tempupload.html',uploadtemplate(slug))
+    elif stage.lower() == 'data':
+        return render(request,'getdata.html',uploadtemplate(slug))
+    elif stage.lower() == 'billing':
+        return render(request,'billing.html',uploadtemplate(slug))
+    elif stage.lower() == 'production':
+        return render(request,'tempupload.html',uploadtemplate(slug))
+    elif stage.lower() == 'shipping':
+        return render(request,'tempupload.html',uploadtemplate(slug))
     pending = OrderDetail.objects.filter(template=True,data=True,billing=True,production=True,shipping=True).count()
     obj = OrderDetail.objects.exclude(template=True,data=True,billing=True,production=True,shipping=True)
     context = {
@@ -129,4 +119,24 @@ def orderlistfilter(request,slug,stage):
     }
     return render(request,'orderlist.html',context)
 
-# def uploadtemplate(stage):
+def uploadtemplate(slug):
+    order = OrderDetail.objects.get(orderid=slug)
+    form = UploadTemplateForm()
+    context = {
+        'order':order,
+        'fimage':False,
+        'bimage':False,
+        'form':form,
+        'response':False
+    }
+    if Uploadtemplate.objects.filter(orderid=order).count() != 0:
+        obj = Uploadtemplate.objects.get(orderid=order)
+        response = Uploadtemplate.objects.get(orderid=order)
+        context = {
+            'form':form,
+            'order':order,
+            'fimage':obj.fimage,
+            'bimage':obj.bimage,
+            'response':obj.response
+        }
+    return context
