@@ -2,90 +2,58 @@
 {% load static %}
 {% block content %}
 <div class="row">
-  <div class="col-md-8 col-lg-8">
-    <div class="card">
-      <form action="" method="POST">
-        {% csrf_token %}
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Company</label>
-              {{form.company}}
-              <!-- <input type="text" class="form-control border-input" placeholder="Company Name"> -->
-            </div>
-          </div>
 
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              {{form.email}}
-              <!-- <input type="email" class="form-control border-input" placeholder="Email">                                            </div> -->
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Phone Number</label>
-              {{form.phonenum}}
-              <!-- <input type="email" class="form-control border-input" placeholder="Email">                                            </div> -->
-            </div>
-          </div>
-        </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-              <label>First Name</label>
-              {{form.fname}}
-             <!-- <input type="text" class="form-control border-input" placeholder="First Name"> -->
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Last Name</label>
-              {{form.lname}}
-              <!-- <input type="text" class="form-control border-input" placeholder="Last Name"> -->
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Address</label>
-              {{form.address}}
-              <!-- <input type="text" class="form-control border-input" placeholder="Address"> -->
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <label>City</label>
-              {{form.city}}
-              <!-- <input type="text" class="form-control border-input" placeholder="City"> -->
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label>Country</label>
-              {{form.country}}
-              <!-- <input type="text" class="form-control border-input" placeholder="Country" value="India"> -->
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label>Postal Code</label>
-              {{form.pincode}}
-              <!-- <input type="number" class="form-control border-input" placeholder="ZIP Code"> -->
-            </div>
-          </div>
-        </div>
-        <div class="text-center">
-          <button type="submit" class="btn btn-info btn-fill btn-wd">Register</button>
-        </div>
-        <div class="clearfix"></div>
-      </form>
+  <div class="col-md-3 col-lg-3">
+    <div style="padding:0px 0px;" class="card">
+      <div style="padding:0px 0px;padding-top:5px;"class="content">
+        <center><h3 style="margin:0px 0px 0px 0px;height:50px;padding-top:15px;">Barcode Encoding</h3></center>
+        <hr>
+        <center><h3><b><i class="rupee sign icon"></i>199</b></h3></center>
+      </div>
+      <div class="footer">
+        <center><h4><a style="border-radius:3px;width:95%;margin: 5px 5px 5px 5px;" class="btn btn-fill btn-lg btn-danger" >Buy Now</a></h4></center>
+      </div>
     </div>
   </div>
+
+  <div class="col-md-3 col-lg-3">
+    <div style="padding:0px 0px;" class="card">
+      <div style="padding:0px 0px;padding-top:5px;"class="content">
+        <center><h3 style="margin:0px 0px 0px 0px;height:50px;padding-top:15px;">Magnetic Stripe</h3></center>
+        <hr>
+        <center><h3><b><i class="rupee sign icon"></i>399</b></h3></center>
+      </div>
+      <div class="footer">
+        <center><h4><a style="border-radius:3px;width:95%;margin: 5px 5px 5px 5px;" class="btn btn-fill btn-lg btn-danger" >Buy Now</a></h4></center>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-lg-3">
+    <div style="padding:0px 0px;" class="card">
+      <div style="padding:0px 0px;padding-top:5px;"class="content">
+        <center><h3 style="margin:0px 0px 0px 0px;height:50px;padding-top:15px;">RFID Encoding</h3></center>
+        <hr>
+        <center><h3><b><i class="rupee sign icon"></i>699</b></h3></center>
+      </div>
+      <div class="footer">
+        <center><h4><a style="border-radius:3px;width:95%;margin: 5px 5px 5px 5px;" class="btn btn-fill btn-lg btn-danger" >Buy Now</a></h4></center>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-lg-3">
+    <div style="padding:0px 0px;" class="card">
+      <div style="padding:0px 0px;padding-top:5px;"class="content">
+        <center><h3 style="margin:0px 0px 0px 0px;height:50px;padding-top:15px;">Proximity-Card</h3></center>
+        <hr>
+        <center><h3><b><i class="rupee sign icon"></i>799</b></h3></center>
+      </div>
+      <div class="footer">
+        <center><h4><a style="border-radius:3px;width:95%;margin: 5px 5px 5px 5px;" class="btn btn-fill btn-lg btn-danger" >Buy Now</a></h4></center>
+      </div>
+    </div>
+  </div>
+
 </div>
 {% endblock content %}
