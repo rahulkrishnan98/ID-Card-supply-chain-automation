@@ -1,5 +1,6 @@
 from django.db import models
 from django_countries.fields import CountryField
+import os
 
 # Create your models here.
 
@@ -63,4 +64,6 @@ class GetData(models.Model):
     file = models.FileField(upload_to='static/files/',blank=True)
 
     def __self__(self):
-        return self.orderid.orderid 
+        return self.orderid.orderid
+    def filename(self):
+        return os.path.basename(self.file.name)

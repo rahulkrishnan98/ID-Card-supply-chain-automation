@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from .forms import ClientDetailForm, RegisterUser, UploadTemplateForm
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import ClientDetail, OrderDetail, Uploadtemplate
+from .models import ClientDetail, OrderDetail, Uploadtemplate, GetData
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
+import os
+from django.conf import settings
+from django.http import HttpResponse, Http404
 
 # Create your views here.
 def signup(request):
@@ -103,13 +106,21 @@ def orderlistfilter(request,slug,stage):
     elif stage.lower() == 'template':
         return render(request,'tempupload.html',uploadtemplate(slug))
     elif stage.lower() == 'data':
-        return render(request,'getdata.html',uploadtemplate(slug))
+        # order = OrderDetail.objects.get(orderid=slug)
+        # path = GetData.objects.get(orderid=order)
+        # file_path = os.path.join(settings.STATIC_ROOT, str(path.file))
+        # if os.path.exists(file_path):
+        #     with open(file_path, 'rb') as fh:
+        #         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+        #         response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+        #         return response
+        return render(request,'getdata.html',downloaddata(slug))
     elif stage.lower() == 'billing':
         return render(request,'billing.html',uploadtemplate(slug))
     elif stage.lower() == 'production':
-        return render(request,'tempupload.html',uploadtemplate(slug))
+        return render(request,'production.html',uploadtemplate(slug))
     elif stage.lower() == 'shipping':
-        return render(request,'tempupload.html',uploadtemplate(slug))
+        return render(request,'shipping.html',uploadtemplate(slug))
     pending = OrderDetail.objects.filter(template=True,data=True,billing=True,production=True,shipping=True).count()
     obj = OrderDetail.objects.exclude(template=True,data=True,billing=True,production=True,shipping=True)
     context = {
@@ -140,3 +151,18 @@ def uploadtemplate(slug):
             'response':obj.response
         }
     return context
+
+def downloaddata(slug):
+    order = OrderDetail.objects.get(orderid=slug)
+    path = GetData.objects.get(orderid=order)
+    file_path = os.path.join(settings.STATIC_ROOT, str(path.file))
+    # if os.path.exists(file_path):
+    #     with open(file_path, 'rb') as fh:
+    #         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+    #         response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+    context = {
+        'order':order,
+        'file':path.file
+    }
+    return context
+    # if os.path.exists(file_path):

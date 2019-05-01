@@ -166,11 +166,11 @@
 																		<td><a href="/orderlist/{{i.orderid}}/template" class="link">{{i.orderid}}<a></td>
 																		<td><a href="/clientdetails/{{i.company}}" class="link">{{i.company}}<a></td>
 																		<td>{{i.created}}</td>
-																		<td><center>{% if i.template %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
-																		<td><center>{% if i.data %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
-																		<td><center>{% if i.billing %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
-																		<td><center>{% if i.production %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
-																		<td><center>{% if i.shipping %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</center></td>
+																		<td><center><a href="/orderlist/{{i.orderid}}/template">{% if i.template %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</a></center></td>
+																		<td><center><a href="/orderlist/{{i.orderid}}/data">{% if i.data %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</a></center></td>
+																		<td><center><a href="/orderlist/{{i.orderid}}/billing">{% if i.billing %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</a></center></td>
+																		<td><center><a href="/orderlist/{{i.orderid}}/production">{% if i.production %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</a></center></td>
+																		<td><center><a href="/orderlist/{{i.orderid}}/shipping">{% if i.shipping %}<i style="color:green;" class="check icon"></i>{% else %}<i style="color:orange;" class="times icon"></i>{% endif %}</a></center></td>
 																	</tr>
 																	{% endfor %}
 															</tbody>
