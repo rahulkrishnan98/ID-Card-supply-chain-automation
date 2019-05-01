@@ -8,18 +8,18 @@ from django.db.models import Q
 import os
 from django.conf import settings
 from django.http import HttpResponse, Http404
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def signup(request):
+    form = RegisterUser()
     if request.method == 'POST':
-        form = RegisterUser(request.POST)
         if form.is_valid():
-            form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return HttpResponseRedirect('/addorder/')
+            return HttpResponseRedirect('/dashboard/')
     else:
         form = RegisterUser()
     context = {
@@ -27,6 +27,7 @@ def signup(request):
     }
     return render(request,'signup.html',context)
 
+@login_required(login_url='/accounts/login')
 def dashboard(request):
     total = OrderDetail.objects.count()
     pending = OrderDetail.objects.filter(template=True,data=True,billing=True,production=True,shipping=True).count()
