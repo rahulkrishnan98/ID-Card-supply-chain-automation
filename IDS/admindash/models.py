@@ -85,3 +85,8 @@ class Bill(models.Model):
 
     def __self__(self):
         return self.orderid.orderid
+
+class ProductionStatus(models.Model):
+    orderid = models.OneToOneField(OrderDetail,on_delete=models.CASCADE,unique=True)
+    days = models.IntegerField(blank=False,default=0)
+    proceed = models.BooleanField(default=False)

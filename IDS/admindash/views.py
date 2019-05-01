@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import ClientDetailForm, RegisterUser, UploadTemplateForm, GenerateBillForm
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import ClientDetail, OrderDetail, Uploadtemplate, GetData, Bill
+from .models import ClientDetail, OrderDetail, Uploadtemplate, GetData, Bill, ProductionStatus
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
@@ -120,7 +120,7 @@ def orderlistfilter(request,slug,stage):
     elif stage.lower() == 'billing':
         return render(request,'billing.html',generatebill(slug,request))
     elif stage.lower() == 'production':
-        return render(request,'production.html',uploadtemplate(slug))
+        return render(request,'production.html',productiondays(slug,request))
     elif stage.lower() == 'shipping':
         return render(request,'shipping.html',uploadtemplate(slug))
     pending = OrderDetail.objects.filter(template=True,data=True,billing=True,production=True,shipping=True).count()
@@ -132,14 +132,35 @@ def orderlistfilter(request,slug,stage):
     }
     return render(request,'orderlist.html',context)
 
+def productiondays(slug,request):
+    order = OrderDetail.objects.get(orderid=slug)
+    if request.method == "POST":
+        value = request.POST.get('prodval')
+        prod = ProductionStatus.objects.get(orderid=order)
+        if request.POST.get('button') == "proceed":
+            prod.proceed = True
+            prod.save()
+        else:
+            prod.days = value
+            prod.save()
+    prod = ProductionStatus.objects.get(orderid=order)
+    context = {
+        'prod':prod.proceed,
+        'order':order,
+    }
+    return context
+
 def generatebill(slug,request):
     if request.method=="POST":
         value = request.POST.get('count')
-        print(value)
         order = OrderDetail.objects.get(orderid=slug)
         bill = Bill.objects.get(orderid=order)
-        bill.count = value
-        bill.save()
+        if bill.count > 0:
+            bill.send = True
+            bill.save()
+        else:
+            bill.count = value
+            bill.save()
     order = OrderDetail.objects.get(orderid=slug)
     if len(Bill.objects.filter(orderid=order)) == 0 :
         context = {
@@ -161,13 +182,15 @@ def generatebill(slug,request):
         return context
     else:
         order = OrderDetail.objects.get(orderid=slug)
+        client = ClientDetail.objects.get(company=order.company)
         bill = Bill.objects.get(orderid=order)
         context = {
             'temp':False,
             'bill':bill,
             'form':False,
             'order':order,
-            'price':bill.count*bill.type
+            'price':bill.count*bill.type,
+            'client':client,
         }
         return context
 

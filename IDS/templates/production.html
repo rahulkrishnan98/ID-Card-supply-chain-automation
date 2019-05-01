@@ -8,16 +8,23 @@
 </div>
 <hr>
 <div class="row">
+  {% if prod %}
+  <div class="col-md-5 col-lg-5">
+    <h3><i class="truck icon"></i> Ready for shipping</h3>
+  </div>
+  {% else %}
   <div class="col-md-5 col-lg-5">
     <div class="card">
         <div class="content" style="padding-bottom:20px;">
-          <form  action="." method="post">
-            <center><input type="number" name="" class="form-control border-input" value="" placeholder="Expected production days required"></center>
+          <form  action="" method="post">
+            {% csrf_token %}
+            <center><input type="number" name="prodval" class="form-control border-input" placeholder="Expected production days required"></center>
             <hr>
-            <center><button style="border-radius:3px; margin-right:20px;" type="submit" class="btn btn-fill btn-info" name="button">Submit</button><button style="border-radius:3px;" type="submit" class="btn btn-fill btn-success" name="button"><b><i class="boxes icon"></i> Proceed to shipping</b></button></center>
+            <center><button style="border-radius:3px; margin-right:20px;" type="submit" class="btn btn-fill btn-info" name="button" value="submit">Submit</button><button style="border-radius:3px;" type="submit" class="btn btn-fill btn-success" name="button" value="proceed"><b><i class="boxes icon"></i> Proceed to shipping</b></button></center>
           </form>
         </div>
     </div>
   </div>
+  {% endif %}
 </div>
 {% endblock content %}

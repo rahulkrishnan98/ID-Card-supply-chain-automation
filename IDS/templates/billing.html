@@ -8,61 +8,6 @@
   </div>
 </div>
 <hr>
-<!-- <div class="row">
-
-  <div class="col-md-3 col-lg-3">
-    <div style="padding:0px 0px;" class="card">
-      <div style="padding:0px 0px;padding-top:5px;"class="content">
-        <center><h3 style="margin:0px 0px 0px 0px;height:50px;padding-top:15px;">Barcode Encoding</h3></center>
-        <hr>
-        <center><h3><b><i class="rupee sign icon"></i>199</b></h3></center>
-      </div>
-      <div class="footer">
-        <center><h4><a style="border-radius:3px;width:95%;margin: 5px 5px 5px 5px;" class="btn btn-fill btn-lg btn-danger" >Buy Now</a></h4></center>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-3 col-lg-3">
-    <div style="padding:0px 0px;" class="card">
-      <div style="padding:0px 0px;padding-top:5px;"class="content">
-        <center><h3 style="margin:0px 0px 0px 0px;height:50px;padding-top:15px;">Magnetic Stripe</h3></center>
-        <hr>
-        <center><h3><b><i class="rupee sign icon"></i>399</b></h3></center>
-      </div>
-      <div class="footer">
-        <center><h4><a style="border-radius:3px;width:95%;margin: 5px 5px 5px 5px;" class="btn btn-fill btn-lg btn-danger" >Buy Now</a></h4></center>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-3 col-lg-3">
-    <div style="padding:0px 0px;" class="card">
-      <div style="padding:0px 0px;padding-top:5px;"class="content">
-        <center><h3 style="margin:0px 0px 0px 0px;height:50px;padding-top:15px;">RFID Encoding</h3></center>
-        <hr>
-        <center><h3><b><i class="rupee sign icon"></i>699</b></h3></center>
-      </div>
-      <div class="footer">
-        <center><h4><a style="border-radius:3px;width:95%;margin: 5px 5px 5px 5px;" class="btn btn-fill btn-lg btn-danger" >Buy Now</a></h4></center>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-3 col-lg-3">
-    <div style="padding:0px 0px;" class="card">
-      <div style="padding:0px 0px;padding-top:5px;"class="content">
-        <center><h3 style="margin:0px 0px 0px 0px;height:50px;padding-top:15px;">Proximity-Card</h3></center>
-        <hr>
-        <center><h3><b><i class="rupee sign icon"></i>799</b></h3></center>
-      </div>
-      <div class="footer">
-        <center><h4><a style="border-radius:3px;width:95%;margin: 5px 5px 5px 5px;" class="btn btn-fill btn-lg btn-danger" >Buy Now</a></h4></center>
-      </div>
-    </div>
-  </div>
-
-</div> -->
 {% if form %}
 <div class="row">
   <div class="col-md-4 col-lg-4">
@@ -85,19 +30,91 @@
 {% endif %}
 {% if bill %}
 <div class="row">
-  <div class="col-md-4 col-lg-4">
-    <div class="card">
-        <div class="content"  style="padding-bottom:20px;">
-          <!-- <center><h4 style="margin:0px 0px 0px 0px;height:50px;padding-top:15px;">{{bill}}</h4></center> -->
-          <!-- <hr> -->
-          <center><h5 style="">Price per card : <b><i class="rupee sign icon"></i>{{bill.type}}</b></h5></center>
-          <center><h5 style="">Total count : <b>{{bill.count|intcomma}}</b></h5></center>
-          <center><h5>Total price : <b><i class="rupee sign icon"></i>{{price|intcomma}}</b></h5></center>
-          <hr>
-          <form  action="." method="post">
-            <center><button style="border-radius:3px;" type="submit" class="btn btn-fill btn-info" name="button">Send Bill</button></center>
-          </form>
-        </div>
+  <div class="col-md-8 col-lg-8">
+    <div style="border-radius:0px;padding:30px;" class="card">
+      {% if bill.send %}
+      <center><h3 style="margin-bottom:35px;"><i style="color:green;" class="check icon"></i> <b>Sent</b></h3></center>
+      <hr>
+      {% endif %}
+      <div class="content">
+        <header>
+          <h3>Invoice</h3>
+          <address>
+            <p>{{client.fname}} {{client.lname}}</p>
+            <p>{{client.company}}</p>
+            <p>{{client.address}}</p>
+            <p>{{client.phonenum}}</p>
+          </address>
+        </header>
+        <article align="right">
+          <h3>Recipient</h3>
+            <p>Caps Digital<br>c/o Darshik</p>
+            <table class="meta" align="right">
+              <thead>
+                <th>Invoice #</th>
+                <th>Date</th>
+                <th>Amount Due</th>
+              </thead>
+              <tbody>
+                <td>{{order}}</td>
+                <td>January 1, 2012</td>
+                <td><i class="rupee sign icon"></i>{{price|intcomma}}</td>
+              </tbody>
+
+          </table>
+          <style>
+            table {
+              width: 100%;
+              margin-bottom: 10px;
+            }
+            th {
+              background: lightgrey;
+            }
+
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: left;
+              padding: 10px;
+            }
+
+          </style>
+          <table>
+              <thead>
+                <th>Item</th>
+                <th>Description</th>
+                <th>Rate</th>
+                <th>Quantity</th>
+                <th>Price</th>
+              </thead>
+              <tbody>
+                <td>Front End Consultation</td>
+                <td>Experience Review</th>
+                <td><i class="rupee sign icon"></i>{{bill.type}}</td>
+                <td><i class="rupee sign icon"></i>{{bill.count|intcomma}}</td>
+                <td><i class="rupee sign icon"></i>{{price|intcomma}}</td>
+              </tbody>
+
+          </table>
+          <table class="balance">
+            <tr>
+              <th>Total</th>
+              <td><i class="rupee sign icon"></i>{{price|intcomma}}</td>
+            </tr>
+          </table>
+        </article>
+        <aside>
+          <hr style="border-top: 1px solid black">
+          <h2><span>Additional Note</span></h2>
+          <div >
+            <p>A finance charge of 2% will be made on unpaid balance after 25 days.</p>
+          </div>
+        </aside>
+        <hr>
+        <form  action="" method="post">
+          {% csrf_token %}
+          <center><button style="border-radius:3px;margin-top:20px;" type="submit" class="btn btn-fill btn-info" >Send Bill</button></center>
+        </form>
+      </div>
     </div>
   </div>
 </div>
