@@ -1,6 +1,7 @@
 from django.db import models
 from django_countries.fields import CountryField
 import os
+import humanfriendly
 
 # Create your models here.
 
@@ -67,3 +68,20 @@ class GetData(models.Model):
         return self.orderid.orderid
     def filename(self):
         return os.path.basename(self.file.name)
+    def filesize(self):
+        return str(humanfriendly.format_size(os.stat(self.file.name).st_size))
+
+class Bill(models.Model):
+    orderid = models.OneToOneField(OrderDetail,on_delete=models.CASCADE,unique=True)
+    choices = (
+        (199,'Barcode Encoding',),
+        (399,'Magnetic Stripe'),
+        (699,'RFID Encoding'),
+        (799,'Proximity-Card'),
+    )
+    type = models.IntegerField(blank=False,choices=choices,default=0)
+    count = models.IntegerField(blank=False,default=0)
+    send = models.BooleanField(default=False)
+
+    def __self__(self):
+        return self.orderid.orderid

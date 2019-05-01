@@ -11,9 +11,12 @@
 <div class="row">
   <div class="col-md-4 col-lg-4">
     <div style="padding: 15px 15px;box-shadow:none;padding-top:5px;" class="card">
-        <center><p style="margin-top:20px;">{{file}} | Size: 441Kb</p></center>
+        <center><p style="margin-top:20px;">{{file}} | Size: {{size}}</p></center>
         <hr>
-        <center><h4>Download Data <button style="border-radius:5px;margin-left:30px;" class="btn btn-fill btn-info" ><i  class="download icon"></i></buttom></h4></center>
+        <form action="" method="post">
+          {% csrf_token %}
+          <center><h4>Download Data <button style="border-radius:5px;margin-left:30px;" class="btn btn-fill btn-info" type="submit"><i  class="download icon"></i></buttom></h4></center>
+        </form>
     </div>
   </div>
 </div>

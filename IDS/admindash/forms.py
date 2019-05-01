@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import ClientDetail, OrderDetail, Uploadtemplate
+from .models import ClientDetail, OrderDetail, Uploadtemplate, Bill
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
@@ -39,3 +39,11 @@ class UploadTemplateForm(forms.ModelForm):
     class Meta:
         model = Uploadtemplate
         fields = ('orderid','fimage', 'bimage' )
+
+class GenerateBillForm(forms.ModelForm):
+    class Meta:
+        model = Bill
+        fields = ('count',)
+    def __init__(self, *args, **kwargs):
+        super(GenerateBillForm, self).__init__(*args, **kwargs)
+        self.fields['count'].widget.attrs['class'] = 'form-control border-input'

@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .forms import ClientDetailForm, RegisterUser, UploadTemplateForm
+from .forms import ClientDetailForm, RegisterUser, UploadTemplateForm, GenerateBillForm
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import ClientDetail, OrderDetail, Uploadtemplate, GetData
+from .models import ClientDetail, OrderDetail, Uploadtemplate, GetData, Bill
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
@@ -105,18 +105,20 @@ def orderlistfilter(request,slug,stage):
         print(slug.lower())
     elif stage.lower() == 'template':
         return render(request,'tempupload.html',uploadtemplate(slug))
+
     elif stage.lower() == 'data':
-        # order = OrderDetail.objects.get(orderid=slug)
-        # path = GetData.objects.get(orderid=order)
-        # file_path = os.path.join(settings.STATIC_ROOT, str(path.file))
-        # if os.path.exists(file_path):
-        #     with open(file_path, 'rb') as fh:
-        #         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-        #         response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-        #         return response
+        if request.method == "POST":
+            order = OrderDetail.objects.get(orderid=slug)
+            path = GetData.objects.get(orderid=order)
+            file_path = os.path.join(settings.STATIC_ROOT, str(path.file))
+            if os.path.exists(file_path):
+                with open(file_path, 'rb') as fh:
+                    response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+                    response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                    return response
         return render(request,'getdata.html',downloaddata(slug))
     elif stage.lower() == 'billing':
-        return render(request,'billing.html',uploadtemplate(slug))
+        return render(request,'billing.html',generatebill(slug,request))
     elif stage.lower() == 'production':
         return render(request,'production.html',uploadtemplate(slug))
     elif stage.lower() == 'shipping':
@@ -129,6 +131,46 @@ def orderlistfilter(request,slug,stage):
         'detail':obj
     }
     return render(request,'orderlist.html',context)
+
+def generatebill(slug,request):
+    if request.method=="POST":
+        value = request.POST.get('count')
+        print(value)
+        order = OrderDetail.objects.get(orderid=slug)
+        bill = Bill.objects.get(orderid=order)
+        bill.count = value
+        bill.save()
+    order = OrderDetail.objects.get(orderid=slug)
+    if len(Bill.objects.filter(orderid=order)) == 0 :
+        context = {
+            'temp':True,
+            'bill':False,
+            'form':False,
+            'order':order,
+        }
+        return context
+    price = Bill.objects.get(orderid=order)
+    if price.count == 0:
+        form = GenerateBillForm()
+        context = {
+            'temp':False,
+            'bill':False,
+            'form':form,
+            'order':order,
+        }
+        return context
+    else:
+        order = OrderDetail.objects.get(orderid=slug)
+        bill = Bill.objects.get(orderid=order)
+        context = {
+            'temp':False,
+            'bill':bill,
+            'form':False,
+            'order':order,
+            'price':bill.count*bill.type
+        }
+        return context
+
 
 def uploadtemplate(slug):
     order = OrderDetail.objects.get(orderid=slug)
@@ -154,15 +196,19 @@ def uploadtemplate(slug):
 
 def downloaddata(slug):
     order = OrderDetail.objects.get(orderid=slug)
-    path = GetData.objects.get(orderid=order)
-    file_path = os.path.join(settings.STATIC_ROOT, str(path.file))
-    # if os.path.exists(file_path):
-    #     with open(file_path, 'rb') as fh:
-    #         response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-    #         response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-    context = {
-        'order':order,
-        'file':path.file
-    }
-    return context
-    # if os.path.exists(file_path):
+    if len(GetData.objects.filter(orderid=order)) == 0:
+        path = GetData.objects.filter(orderid=order)
+        context = {
+            'order':order,
+            'file':'Not uploaded',
+            'size':None,
+        }
+        return context
+    else:
+        path = GetData.objects.get(orderid=order)
+        context = {
+            'order':order,
+            'file':path.filename,
+            'size':path.filesize,
+        }
+        return context
