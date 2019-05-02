@@ -9,7 +9,9 @@ import os
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
-
+# from mailsender import MailSender
+from .send import emailTheBastard
+from .giligiliapa import mail_notify
 # Create your views here.
 def signup(request):
     form = RegisterUser()
@@ -182,6 +184,7 @@ def generatebill(slug,request):
         }
         return context
     else:
+        
         order = OrderDetail.objects.get(orderid=slug)
         client = ClientDetail.objects.get(company=order.company)
         bill = Bill.objects.get(orderid=order)
@@ -193,6 +196,39 @@ def generatebill(slug,request):
             'price':bill.count*bill.type,
             'client':client,
         }
+        string="""<h3>Recipient</h3>
+            <p>Caps Digital<br>c/o Darshik</p>
+            <table class="meta" align="right">
+              <thead>
+                <th>Invoice #</th>
+                <th>Date</th>
+                <th>Amount Due</th>
+              </thead>
+              <tbody>
+                <td>"""+str(context["order"])+"""</td>
+                <td>January 1, 2012</td>
+                <td><i class="rupee sign icon"></i>"""+str(context["price"])+"""</td>
+              </tbody>
+              </table>
+              <style>
+            table {
+              width: 100%;
+              margin-bottom: 10px;
+            }
+            th {
+              background: lightgrey;
+            }
+
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: left;
+              padding: 10px;
+            }
+
+          </style>"""
+
+          
+        mail_notify(string)
         return context
 
 
